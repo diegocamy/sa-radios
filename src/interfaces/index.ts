@@ -5,3 +5,7 @@ export interface RadioStation {
   url: string;
   logo: string;
 }
+
+export interface RadioCardProps {
+  img: string;
+}

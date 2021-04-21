@@ -9,6 +9,9 @@ import "swiper/components/navigation/navigation.scss";
 import "swiper/components/pagination/pagination.scss";
 import "swiper/components/scrollbar/scrollbar.scss";
 
+import logo from "../../assets/logos/csr.png";
+import RadioCard from "../RadioCard/RadioCard";
+
 // install Swiper modules
 SwiperCore.use([A11y, Lazy]);
 
@@ -22,7 +25,15 @@ const Slider = () => {
       onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log("slide change")}
     >
-      <SwiperSlide>hola</SwiperSlide>
+      <SwiperSlide>
+        <RadioCard img={logo} />
+      </SwiperSlide>
+      <SwiperSlide>
+        <RadioCard img={logo} />
+      </SwiperSlide>
+      <SwiperSlide>
+        <RadioCard img={logo} />
+      </SwiperSlide>
     </Swiper>
   );
 };
