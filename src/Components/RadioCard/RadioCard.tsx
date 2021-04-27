@@ -8,7 +8,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ img }) => {
   const { color } = useColorThief(img, { colorCount: 20 });
 
   useEffect(() => {
-    setBorderColor(`${color?.toString()},0.5`);
+    setBorderColor(`${color?.toString()},0.3`);
   }, [color]);
 
   return (
