@@ -21,13 +21,20 @@ function App() {
         <i className="fab fa-github"></i>
         <i className="far fa-heart"></i>
       </div>
-      <ReactSlider
-        defaultValue={100}
-        onChange={(value) => console.log(value)}
-      />
-      <div className="volume-icons">
-        <i className="fas fa-volume-down"></i>
-        <i className="fas fa-volume-up"></i>
+      <div className="volume">
+        <ReactSlider
+          defaultValue={100}
+          onChange={(value) => console.log(value)}
+        />
+        <div className="volume-icons">
+          <i className="fas fa-volume-down"></i>
+          <i className="fas fa-volume-up"></i>
+        </div>
+      </div>
+      <div className="control-icons">
+        <i className="fas fa-step-backward"></i>
+        <i className="fas fa-play"></i>
+        <i className="fas fa-step-forward"></i>
       </div>
     </AppWrapper>
   );

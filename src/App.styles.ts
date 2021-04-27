@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 export const AppWrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
   .now-playing {
     display: flex;
     padding: 1rem;
@@ -15,9 +20,10 @@ export const AppWrapper = styled.div`
 
   .radio-info {
     font-weight: bold;
-
+    width: 80%;
+    margin: 1rem auto;
     p {
-      margin: 5px 1rem;
+      margin: 5px 0;
       font-size: 1.1rem;
 
       :last-of-type {
@@ -30,9 +36,8 @@ export const AppWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
-    font-size: 1.4rem;
-
+    font-size: 1.8rem;
+    margin: auto;
     i {
       margin: 1rem;
     }
@@ -64,5 +69,23 @@ export const AppWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .control-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    i {
+      font-size: 1.5rem;
+      margin: 1rem;
+
+      :nth-of-type(2) {
+        font-size: 2rem;
+        background-color: red;
+        padding: 1.3rem;
+        border-radius: 1.3rem;
+      }
+    }
   }
 `;
