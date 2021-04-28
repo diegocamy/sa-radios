@@ -6,15 +6,12 @@ export interface RadioStation {
   logo: string;
 }
 
-export interface RadioCardProps {
-  img: string;
-}
-
 export interface AppState {
   radios: RadioStation[];
   activeRadio: RadioStation;
+  color: string;
   volume: number;
   playing: boolean;
-  muted: boolean;
   percentagePlayed: number;
+  loadRadio: boolean;
 }

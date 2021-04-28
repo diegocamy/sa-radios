@@ -15,7 +15,7 @@ const radios = [
     id: 0,
     name: "Playback FM",
     host: "Forth Right MC",
-    url: "https://soundcloud.com/selectabwoy/gta-san-andreas-playback-fm",
+    url: "https://soundcloud.com/user-15863656/playback-fm",
     logo: playback,
   },
   {
@@ -30,21 +30,21 @@ const radios = [
     id: 2,
     name: "K-DST",
     host: 'Tommy "The Nightmare" Smith',
-    url: "https://soundcloud.com/living-on-the-road/k-dst-gta-san-andreas-full",
+    url: "https://soundcloud.com/pro-irfan-pc-foundation/k-dst-san-andreas",
     logo: kdst,
   },
   {
     id: 3,
     name: "Bounce FM",
     host: "The Funktipus",
-    url: "https://soundcloud.com/furtheram11/grand-theft-auto-san-andreas",
+    url: "https://soundcloud.com/ian-mccullough-341901520/bounce-fm",
     logo: bounce,
   },
   {
     id: 4,
     name: "SF-UR",
     host: "Hans Oberlander",
-    url: "https://soundcloud.com/selectabwoy/gta-san-andreas-sf-ur",
+    url: "https://soundcloud.com/ryan-cassidy-13/grand-theft-auto-san-andreas",
     logo: sfur,
   },
   {
@@ -65,7 +65,7 @@ const radios = [
     id: 7,
     name: "CSR 103.9",
     host: 'Phillip "PM" Michaels',
-    url: "https://soundcloud.com/selectabwoy/gta-san-andreas-csr-1039",
+    url: "https://soundcloud.com/furtheram11/grand-theft-auto-san-andreas-1",
     logo: csr,
   },
   {

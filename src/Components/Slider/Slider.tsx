@@ -19,11 +19,10 @@ SwiperCore.use([A11y, Lazy]);
 
 type Props = {
   radios: RadioStation[];
-  activeRadio: RadioStation;
   dispatch: React.Dispatch<Action>;
 };
 
-const Slider = ({ radios, activeRadio, dispatch }: Props) => {
+const Slider = ({ radios, dispatch }: Props) => {
   return (
     <Wrapper>
       <Swiper
@@ -31,7 +30,7 @@ const Slider = ({ radios, activeRadio, dispatch }: Props) => {
         slidesPerView={1}
         loop={true}
         onSlideChange={(swiper) =>
-          dispatch({ type: "change_radio", radio: radios[swiper.realIndex] })
+          dispatch({ type: "change-radio", radio: radios[swiper.realIndex] })
         }
       >
         {radios?.map((r) => (

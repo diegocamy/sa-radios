@@ -12,20 +12,21 @@ import "rc-slider/assets/index.css";
 const initialState = {
   radios,
   activeRadio: radios[0],
-  volume: 0,
+  volume: 1,
+  color: "",
   playing: false,
-  muted: false,
   percentagePlayed: Math.random(),
+  loadRadio: false,
 };
 
 export type Action =
-  | { type: "change_radio"; radio: RadioStation }
-  | { type: "volume_up"; volume: number }
-  | { type: "volume_down"; volume: number }
+  | { type: "change-radio"; radio: RadioStation }
+  | { type: "change-volume"; volume: number }
   | { type: "play" }
   | { type: "pause" }
-  | { type: "mute"; mute: boolean }
-  | { type: "percentage_played"; percentage: number };
+  | { type: "first-load" }
+  | { type: "change-color"; color: string }
+  | { type: "change-percentage-played"; percentage: number };
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -39,15 +40,30 @@ function reducer(state: AppState, action: Action): AppState {
         ...state,
         playing: false,
       };
-    case "change_radio":
+    case "change-radio":
       return {
         ...state,
         activeRadio: action.radio,
       };
-    case "percentage_played":
+    case "change-percentage-played":
       return {
         ...state,
         percentagePlayed: action.percentage,
+      };
+    case "first-load":
+      return {
+        ...state,
+        loadRadio: true,
+      };
+    case "change-volume":
+      return {
+        ...state,
+        volume: action.volume,
+      };
+    case "change-color":
+      return {
+        ...state,
+        color: action.color,
       };
     default:
       return state;
@@ -57,9 +73,19 @@ function reducer(state: AppState, action: Action): AppState {
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const refPlayer = useRef<any>();
+
+  if (!state.loadRadio) {
+    return (
+      <AppWrapper>
+        <button onClick={() => dispatch({ type: "first-load" })}>
+          firstload
+        </button>
+      </AppWrapper>
+    );
+  }
+
   return (
     <AppWrapper>
-      <button onClick={() => dispatch({ type: "play" })}>firstload</button>
       <div className="now-playing">
         <i className="fas fa-chevron-left"></i>
         <p>Now playing</p>
@@ -69,6 +95,7 @@ function App() {
         url={state.activeRadio.url}
         ref={refPlayer}
         playing={state.playing}
+        volume={state.volume}
         onReady={(p) => {
           p.seekTo(state.percentagePlayed, "fraction");
           dispatch({ type: "play" });
@@ -79,14 +106,10 @@ function App() {
           dispatch({ type: "play" });
         }}
         onProgress={({ played }) =>
-          dispatch({ type: "percentage_played", percentage: played })
+          dispatch({ type: "change-percentage-played", percentage: played })
         }
       />
-      <Slider
-        radios={radios}
-        dispatch={dispatch}
-        activeRadio={state.activeRadio}
-      />
+      <Slider radios={radios} dispatch={dispatch} />
       <div className="radio-info">
         <p>{state.activeRadio.name}</p>
         <p>{state.activeRadio.host}</p>
@@ -99,7 +122,9 @@ function App() {
       <div className="volume">
         <ReactSlider
           defaultValue={100}
-          onChange={(value) => console.log(value)}
+          onChange={(value) => {
+            dispatch({ type: "change-volume", volume: value / 100 });
+          }}
         />
         <div className="volume-icons">
           <i className="fas fa-volume-down"></i>
@@ -111,11 +136,6 @@ function App() {
         <i
           className={`fas fa-${state.playing ? "pause" : "play"}`}
           onClick={() => dispatch({ type: state.playing ? "pause" : "play" })}
-        ></i>
-
-        <i
-          className="fas fa-play"
-          onClick={() => dispatch({ type: "play" })}
         ></i>
         <i className="fas fa-step-forward"></i>
       </div>
