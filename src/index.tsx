@@ -12,6 +12,12 @@ const GlobalStyles = createGlobalStyle`
   body{
     font-family: 'Quicksand', sans-serif;
   }
+
+  i {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 ReactDOM.render(

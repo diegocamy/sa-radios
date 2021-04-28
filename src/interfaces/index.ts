@@ -9,3 +9,12 @@ export interface RadioStation {
 export interface RadioCardProps {
   img: string;
 }
+
+export interface AppState {
+  radios: RadioStation[];
+  activeRadio: RadioStation;
+  volume: number;
+  playing: boolean;
+  muted: boolean;
+  percentagePlayed: number;
+}

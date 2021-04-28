@@ -9,33 +9,36 @@ import "swiper/components/navigation/navigation.scss";
 import "swiper/components/pagination/pagination.scss";
 import "swiper/components/scrollbar/scrollbar.scss";
 
-import logo from "../../assets/logos/csr.png";
 import RadioCard from "../RadioCard/RadioCard";
 import { Wrapper } from "./Slider.styles";
+import { RadioStation } from "../../interfaces";
+import { Action } from "../../App";
 
 // install Swiper modules
 SwiperCore.use([A11y, Lazy]);
 
-const Slider = () => {
+type Props = {
+  radios: RadioStation[];
+  activeRadio: RadioStation;
+  dispatch: React.Dispatch<Action>;
+};
+
+const Slider = ({ radios, activeRadio, dispatch }: Props) => {
   return (
     <Wrapper>
       <Swiper
-        spaceBetween={50}
+        spaceBetween={0}
         slidesPerView={1}
-        lazy={{ loadPrevNext: true }}
         loop={true}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
+        onSlideChange={(swiper) =>
+          dispatch({ type: "change_radio", radio: radios[swiper.realIndex] })
+        }
       >
-        <SwiperSlide>
-          <RadioCard img={logo} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <RadioCard img={logo} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <RadioCard img={logo} />
-        </SwiperSlide>
+        {radios?.map((r) => (
+          <SwiperSlide key={r.id}>
+            <RadioCard img={r.logo} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </Wrapper>
   );
