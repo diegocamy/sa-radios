@@ -9,7 +9,7 @@ export interface RadioStation {
 export interface AppState {
   radios: RadioStation[];
   activeRadio: RadioStation;
-  color: string;
+  color: string | undefined;
   volume: number;
   playing: boolean;
   percentagePlayed: number;

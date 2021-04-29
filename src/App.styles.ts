@@ -7,6 +7,7 @@ export const AppWrapper = styled.div`
   justify-content: space-evenly;
 
   .now-playing {
+    color: ${({ color }) => `rgb(${color})`};
     display: flex;
     padding: 1rem;
     justify-content: space-between;
@@ -19,9 +20,12 @@ export const AppWrapper = styled.div`
   }
 
   .radio-info {
+    color: ${({ color }) => `rgb(${color})`};
     font-weight: bold;
+    height: 90px;
     width: 80%;
     margin: 1rem auto;
+    margin-top: 2rem;
     p {
       margin: 5px 0;
       font-size: 1.1rem;
@@ -33,6 +37,7 @@ export const AppWrapper = styled.div`
   }
 
   .icons {
+    color: ${({ color }) => `rgb(${color})`};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,16 +58,17 @@ export const AppWrapper = styled.div`
 
     .rc-slider-track {
       height: 5px;
-      background-color: black;
+      background-color: ${({ color }) => `rgb(${color})`};
     }
 
     .rc-slider-handle {
-      background-color: black;
+      background-color: ${({ color }) => `rgb(${color})`};
       border: none;
     }
   }
 
   .volume-icons {
+    color: ${({ color }) => `rgb(${color})`};
     width: 80%;
     padding: 0.5rem 0;
     margin: auto;
@@ -72,6 +78,7 @@ export const AppWrapper = styled.div`
   }
 
   .control-icons {
+    color: ${({ color }) => `rgb(${color})`};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,7 +89,7 @@ export const AppWrapper = styled.div`
 
       :nth-of-type(2) {
         font-size: 2rem;
-        background-color: red;
+        background-color: ${({ color }) => `rgba(${color},0.1)`};
         padding: 1.3rem;
         border-radius: 1.3rem;
       }

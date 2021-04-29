@@ -1,6 +1,7 @@
-import { useReducer, useRef } from "react";
-import Player from "react-player/soundcloud";
+import { useEffect, useReducer, useRef } from "react";
+import Player from "react-player";
 import ReactSlider from "rc-slider";
+import useColorThief from "use-color-thief";
 
 import Slider from "./Components/Slider/Slider";
 import { AppWrapper } from "./App.styles";
@@ -25,7 +26,7 @@ export type Action =
   | { type: "play" }
   | { type: "pause" }
   | { type: "first-load" }
-  | { type: "change-color"; color: string }
+  | { type: "change-color"; color: string | undefined }
   | { type: "change-percentage-played"; percentage: number };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -72,7 +73,26 @@ function reducer(state: AppState, action: Action): AppState {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { palette } = useColorThief(state.activeRadio.logo, {
+    colorCount: 5,
+    quality: 10,
+  });
   const refPlayer = useRef<any>();
+
+  useEffect(() => {
+    if (palette !== null) {
+      if (state.activeRadio.id === 8 || state.activeRadio.id === 10) {
+        //if radio is k-jah, master sounds or wctr use last color in palette
+        //because the first one doesn't contrast too well with background
+        dispatch({ type: "change-color", color: palette[4]?.toString() });
+      } else if (state.activeRadio.id === 9) {
+        //if radio is master sounds use second color in palette
+        dispatch({ type: "change-color", color: "246, 114, 4" });
+      } else {
+        dispatch({ type: "change-color", color: palette[0]?.toString() });
+      }
+    }
+  }, [palette, state.activeRadio.id]);
 
   if (!state.loadRadio) {
     return (
@@ -85,19 +105,22 @@ function App() {
   }
 
   return (
-    <AppWrapper>
+    <AppWrapper color={state.color}>
       <div className="now-playing">
         <i className="fas fa-chevron-left"></i>
         <p>Now playing</p>
         <i className="fas fa-ellipsis-v"></i>
       </div>
       <Player
+        style={{ display: "none" }}
         url={state.activeRadio.url}
         ref={refPlayer}
         playing={state.playing}
         volume={state.volume}
+        onDuration={(d) => {
+          refPlayer.current.seekTo(state.percentagePlayed, "fraction");
+        }}
         onReady={(p) => {
-          p.seekTo(state.percentagePlayed, "fraction");
           dispatch({ type: "play" });
         }}
         onEnded={() => {
