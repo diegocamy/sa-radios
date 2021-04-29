@@ -6,6 +6,7 @@ import useColorThief from "use-color-thief";
 import Slider from "./Components/Slider/Slider";
 import { AppWrapper } from "./App.styles";
 import { AppState, RadioStation } from "./interfaces";
+import fetchStreamURL from "./utils/fetchStreamURL";
 import radios from "./data/radios";
 
 import "rc-slider/assets/index.css";
@@ -16,6 +17,7 @@ const initialState = {
   volume: 1,
   color: "",
   playing: false,
+  loading: false,
   percentagePlayed: Math.random(),
   loadRadio: false,
 };
@@ -26,6 +28,8 @@ export type Action =
   | { type: "play" }
   | { type: "pause" }
   | { type: "first-load" }
+  | { type: "loading"; loading: boolean }
+  | { type: "set-stream-url"; url: string }
   | { type: "change-color"; color: string | undefined }
   | { type: "change-percentage-played"; percentage: number };
 
@@ -66,6 +70,16 @@ function reducer(state: AppState, action: Action): AppState {
         ...state,
         color: action.color,
       };
+    case "loading":
+      return {
+        ...state,
+        loading: action.loading,
+      };
+    case "set-stream-url":
+      return {
+        ...state,
+        activeRadio: { ...state.activeRadio, streamURL: action.url },
+      };
     default:
       return state;
   }
@@ -78,6 +92,16 @@ function App() {
     quality: 10,
   });
   const refPlayer = useRef<any>();
+
+  //fetch the streamURL everytime the activeRadio changes
+  useEffect(() => {
+    (async () => {
+      dispatch({ type: "loading", loading: true });
+      const url = await fetchStreamURL(state.activeRadio.url);
+      dispatch({ type: "set-stream-url", url });
+      dispatch({ type: "loading", loading: false });
+    })();
+  }, [state.activeRadio.url]);
 
   useEffect(() => {
     if (palette !== null) {
@@ -113,7 +137,7 @@ function App() {
       </div>
       <Player
         style={{ display: "none" }}
-        url={state.activeRadio.url}
+        url={state.activeRadio.streamURL}
         ref={refPlayer}
         playing={state.playing}
         volume={state.volume}
