@@ -24,7 +24,7 @@ const radios = [
     name: "K-Rose",
     host: "Mary-Beth Maybell",
     url:
-      "https://soundcloud.com/ryan-cassidy-13/grand-theft-auto-san-andreas-k",
+      "https://soundcloud.com/augustus-christie-paige/gta-san-andreas-k-rose",
     streamURL: "",
     logo: krose,
   },

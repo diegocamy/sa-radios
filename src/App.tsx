@@ -11,6 +11,8 @@ import radios from "./data/radios";
 
 import "rc-slider/assets/index.css";
 
+import audio from "./sounds/tune1.wav";
+
 const initialState = {
   radios,
   activeRadio: radios[0],
@@ -85,6 +87,8 @@ function reducer(state: AppState, action: Action): AppState {
   }
 }
 
+const radioNoise = new Audio(audio);
+
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { palette } = useColorThief(state.activeRadio.logo, {
@@ -96,12 +100,16 @@ function App() {
   //fetch the streamURL everytime the activeRadio changes
   useEffect(() => {
     (async () => {
+      radioNoise.loop = true;
+      if (state.loadRadio) {
+        radioNoise.play();
+      }
       dispatch({ type: "loading", loading: true });
       const url = await fetchStreamURL(state.activeRadio.url);
       dispatch({ type: "set-stream-url", url });
       dispatch({ type: "loading", loading: false });
     })();
-  }, [state.activeRadio.url]);
+  }, [state.activeRadio.url, state.loadRadio]);
 
   useEffect(() => {
     if (palette !== null) {
@@ -121,7 +129,12 @@ function App() {
   if (!state.loadRadio) {
     return (
       <AppWrapper>
-        <button onClick={() => dispatch({ type: "first-load" })}>
+        <button
+          onClick={() => {
+            dispatch({ type: "first-load" });
+            radioNoise.play();
+          }}
+        >
           firstload
         </button>
       </AppWrapper>
@@ -141,6 +154,8 @@ function App() {
         ref={refPlayer}
         playing={state.playing}
         volume={state.volume}
+        onError={(e) => console.log(e)}
+        onBuffer={() => radioNoise.pause()}
         onDuration={(d) => {
           refPlayer.current.seekTo(state.percentagePlayed, "fraction");
         }}
