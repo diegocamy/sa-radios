@@ -12,6 +12,7 @@ import radios from "./data/radios";
 import "rc-slider/assets/index.css";
 
 import audio from "./sounds/tune1.wav";
+import SplashScreen from "./Components/SplashScreen/SplashScreen";
 
 const initialState = {
   radios,
@@ -126,18 +127,7 @@ function App() {
   }, [palette, state.activeRadio.id]);
 
   if (!state.loadRadio) {
-    return (
-      <AppWrapper>
-        <button
-          onClick={() => {
-            dispatch({ type: "first-load" });
-            radioNoise.play();
-          }}
-        >
-          firstload
-        </button>
-      </AppWrapper>
-    );
+    return <SplashScreen dispatch={dispatch} />;
   }
 
   return (
