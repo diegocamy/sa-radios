@@ -107,7 +107,6 @@ function App() {
       dispatch({ type: "loading", loading: true });
       const url = await fetchStreamURL(state.activeRadio.url);
       dispatch({ type: "set-stream-url", url });
-      dispatch({ type: "loading", loading: false });
     })();
   }, [state.activeRadio.url, state.loadRadio]);
 
@@ -155,7 +154,10 @@ function App() {
         playing={state.playing}
         volume={state.volume}
         onError={(e) => console.log(e)}
-        onBuffer={() => radioNoise.pause()}
+        onBuffer={() => {
+          radioNoise.pause();
+          dispatch({ type: "loading", loading: false });
+        }}
         onDuration={(d) => {
           refPlayer.current.seekTo(state.percentagePlayed, "fraction");
         }}
@@ -195,10 +197,15 @@ function App() {
       </div>
       <div className="control-icons">
         <i className="fas fa-step-backward"></i>
-        <i
-          className={`fas fa-${state.playing ? "pause" : "play"}`}
-          onClick={() => dispatch({ type: state.playing ? "pause" : "play" })}
-        ></i>
+        {state.loading ? (
+          <i className="fas fa-circle-notch spin"></i>
+        ) : (
+          <i
+            className={`fas fa-${state.playing ? "pause" : "play"}`}
+            onClick={() => dispatch({ type: state.playing ? "pause" : "play" })}
+          ></i>
+        )}
+
         <i className="fas fa-step-forward"></i>
       </div>
     </AppWrapper>

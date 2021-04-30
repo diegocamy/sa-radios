@@ -86,6 +86,7 @@ export const AppWrapper = styled.div`
     i {
       font-size: 1.5rem;
       margin: 1rem;
+      transition: transform 100ms linear;
 
       :nth-of-type(2) {
         font-size: 2rem;
@@ -93,6 +94,29 @@ export const AppWrapper = styled.div`
         padding: 1.3rem;
         border-radius: 1.3rem;
       }
+
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  .spin {
+    padding: 1.3rem 1.2rem !important;
+    animation: spinner 2s linear infinite;
+    background-color: white !important;
+
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 `;
