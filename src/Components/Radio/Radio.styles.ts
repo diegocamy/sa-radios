@@ -6,6 +6,11 @@ export const AppWrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
 
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   .now-playing {
     color: ${({ color }) => `rgb(${color})`};
     display: flex;

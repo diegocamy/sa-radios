@@ -1,7 +1,7 @@
 import Particles from "react-particles-js";
 import { SplashWrapper } from "./SplashScreen.styles";
 
-import { Action } from "../../App";
+import Action from "../Radio/Radio.action";
 
 import playback from "../../assets/logos/playback.png";
 import krose from "../../assets/logos/krose.png";

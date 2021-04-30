@@ -1,18 +1,20 @@
 import { useEffect, useReducer, useRef } from "react";
+//COMPONENTS
 import Player from "react-player";
 import ReactSlider from "rc-slider";
 import useColorThief from "use-color-thief";
+import Slider from "../Slider/Slider";
+import SplashScreen from "../SplashScreen/SplashScreen";
 
-import Slider from "./Components/Slider/Slider";
-import { AppWrapper } from "./App.styles";
-import { AppState, RadioStation } from "./interfaces";
-import fetchStreamURL from "./utils/fetchStreamURL";
-import radios from "./data/radios";
-
+//STYLES
+import { AppWrapper } from "./Radio.styles";
 import "rc-slider/assets/index.css";
 
-import audio from "./sounds/tune1.wav";
-import SplashScreen from "./Components/SplashScreen/SplashScreen";
+//HELPER FUNCTIONS AND DATA
+import reducer from "./Radio.reducer";
+import fetchStreamURL from "../../utils/fetchStreamURL";
+import radios from "../../data/radios";
+import audio from "../../sounds/tune1.wav";
 
 const initialState = {
   radios,
@@ -25,72 +27,9 @@ const initialState = {
   loadRadio: false,
 };
 
-export type Action =
-  | { type: "change-radio"; radio: RadioStation }
-  | { type: "change-volume"; volume: number }
-  | { type: "play" }
-  | { type: "pause" }
-  | { type: "first-load" }
-  | { type: "loading"; loading: boolean }
-  | { type: "set-stream-url"; url: string }
-  | { type: "change-color"; color: string | undefined }
-  | { type: "change-percentage-played"; percentage: number };
-
-function reducer(state: AppState, action: Action): AppState {
-  switch (action.type) {
-    case "play":
-      return {
-        ...state,
-        playing: true,
-      };
-    case "pause":
-      return {
-        ...state,
-        playing: false,
-      };
-    case "change-radio":
-      return {
-        ...state,
-        activeRadio: action.radio,
-      };
-    case "change-percentage-played":
-      return {
-        ...state,
-        percentagePlayed: action.percentage,
-      };
-    case "first-load":
-      return {
-        ...state,
-        loadRadio: true,
-      };
-    case "change-volume":
-      return {
-        ...state,
-        volume: action.volume,
-      };
-    case "change-color":
-      return {
-        ...state,
-        color: action.color,
-      };
-    case "loading":
-      return {
-        ...state,
-        loading: action.loading,
-      };
-    case "set-stream-url":
-      return {
-        ...state,
-        activeRadio: { ...state.activeRadio, streamURL: action.url },
-      };
-    default:
-      return state;
-  }
-}
-
 const radioNoise = new Audio(audio);
 
-function App() {
+const Radio = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { palette } = useColorThief(state.activeRadio.logo, {
     colorCount: 5,
@@ -133,10 +72,14 @@ function App() {
   return (
     <AppWrapper color={state.color}>
       <div className="now-playing">
-        <i className="fas fa-chevron-left"></i>
+        <i
+          className="fas fa-chevron-left"
+          onClick={() => dispatch({ type: "first-load" })}
+        ></i>
         <p>Now playing</p>
         <i className="fas fa-ellipsis-v"></i>
       </div>
+      {/* REACT PLAYER HIDDEN WITH CSS */}
       <Player
         style={{ display: "none" }}
         url={state.activeRadio.streamURL}
@@ -148,10 +91,10 @@ function App() {
           radioNoise.pause();
           dispatch({ type: "loading", loading: false });
         }}
-        onDuration={(d) => {
+        onDuration={() => {
           refPlayer.current.seekTo(state.percentagePlayed, "fraction");
         }}
-        onReady={(p) => {
+        onReady={() => {
           dispatch({ type: "play" });
         }}
         onEnded={() => {
@@ -163,16 +106,23 @@ function App() {
           dispatch({ type: "change-percentage-played", percentage: played })
         }
       />
+      {/* RADIO LOGO SLIDER */}
       <Slider radios={radios} dispatch={dispatch} />
+      {/* RADIO NAME AND HOST */}
       <div className="radio-info">
         <p>{state.activeRadio.name}</p>
         <p>{state.activeRadio.host}</p>
       </div>
+      {/* BUTTONS
+      SHARE - GITHUB - LIKE */}
       <div className="icons">
         <i className="fas fa-share-alt"></i>
-        <i className="fab fa-github"></i>
+        <a href="https://github.com/diegocamy/sa-radios">
+          <i className="fab fa-github"></i>
+        </a>
         <i className="far fa-heart"></i>
       </div>
+      {/* {VOLUME BAR AND ICONS} */}
       <div className="volume">
         <ReactSlider
           defaultValue={100}
@@ -185,6 +135,8 @@ function App() {
           <i className="fas fa-volume-up"></i>
         </div>
       </div>
+      {/* BUTTONS
+      PREV - PLAY - NEXT  */}
       <div className="control-icons">
         <i className="fas fa-step-backward prev-radio"></i>
         {state.loading ? (
@@ -200,6 +152,6 @@ function App() {
       </div>
     </AppWrapper>
   );
-}
+};
 
-export default App;
+export default Radio;

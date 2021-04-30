@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle } from "styled-components";
-import App from "./App";
+import Radio from "./Components/Radio/Radio";
 
 import GTAFont from "./fonts/pricedown.ttf";
 
@@ -30,7 +30,7 @@ const GlobalStyles = createGlobalStyle`
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
-    <App />
+    <Radio />
   </React.StrictMode>,
   document.getElementById("root")
 );

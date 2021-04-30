@@ -12,7 +12,7 @@ import "swiper/components/scrollbar/scrollbar.scss";
 import RadioCard from "../RadioCard/RadioCard";
 import { Wrapper } from "./Slider.styles";
 import { RadioStation } from "../../interfaces";
-import { Action } from "../../App";
+import Action from "../Radio/Radio.action";
 
 // install Swiper modules
 SwiperCore.use([A11y, Lazy, Navigation]);

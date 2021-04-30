@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import useColorThief from "use-color-thief";
 import { Card } from "./RadioCard.styles";
 
-type Props = {
+interface Props {
   img: string;
-};
+}
 
 const RadioCard = ({ img }: Props) => {
   const [borderColor, setBorderColor] = useState("");
