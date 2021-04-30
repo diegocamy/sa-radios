@@ -186,7 +186,7 @@ function App() {
         </div>
       </div>
       <div className="control-icons">
-        <i className="fas fa-step-backward"></i>
+        <i className="fas fa-step-backward prev-radio"></i>
         {state.loading ? (
           <i className="fas fa-circle-notch spin"></i>
         ) : (
@@ -196,7 +196,7 @@ function App() {
           ></i>
         )}
 
-        <i className="fas fa-step-forward"></i>
+        <i className="fas fa-step-forward next-radio"></i>
       </div>
     </AppWrapper>
   );

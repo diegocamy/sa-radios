@@ -1,5 +1,5 @@
 // import Swiper core and required modules
-import SwiperCore, { Lazy, A11y } from "swiper";
+import SwiperCore, { Lazy, A11y, Navigation } from "swiper";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -15,7 +15,7 @@ import { RadioStation } from "../../interfaces";
 import { Action } from "../../App";
 
 // install Swiper modules
-SwiperCore.use([A11y, Lazy]);
+SwiperCore.use([A11y, Lazy, Navigation]);
 
 type Props = {
   radios: RadioStation[];
@@ -32,6 +32,10 @@ const Slider = ({ radios, dispatch }: Props) => {
         onSlideChange={(swiper) =>
           dispatch({ type: "change-radio", radio: radios[swiper.realIndex] })
         }
+        navigation={{
+          nextEl: ".next-radio",
+          prevEl: ".prev-radio",
+        }}
       >
         {radios?.map((r) => (
           <SwiperSlide key={r.id}>
