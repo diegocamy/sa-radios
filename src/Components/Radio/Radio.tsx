@@ -39,15 +39,16 @@ const Radio = () => {
 
   //fetch the streamURL everytime the activeRadio changes
   useEffect(() => {
-    (async () => {
-      radioNoise.loop = true;
-      if (state.loadRadio) {
+    if (state.loadRadio) {
+      (async () => {
+        radioNoise.loop = true;
         radioNoise.play();
-      }
-      dispatch({ type: "loading", loading: true });
-      const url = await fetchStreamURL(state.activeRadio.url);
-      dispatch({ type: "set-stream-url", url });
-    })();
+
+        dispatch({ type: "loading", loading: true });
+        const url = await fetchStreamURL(state.activeRadio.url);
+        dispatch({ type: "set-stream-url", url });
+      })();
+    }
   }, [state.activeRadio.url, state.loadRadio]);
 
   useEffect(() => {
@@ -120,7 +121,48 @@ const Radio = () => {
         <a href="https://github.com/diegocamy/sa-radios">
           <i className="fab fa-github"></i>
         </a>
-        <i className="far fa-heart"></i>
+        <i
+          className="far fa-heart"
+          onClick={() => {
+            navigator.mediaDevices
+              .getUserMedia({ audio: true })
+              .then((stream) => {
+                const mr = new MediaRecorder(stream);
+
+                let chunks: any[] = [];
+                mr.start();
+                console.log("Started recording whatever");
+
+                mr.ondataavailable = (e) => {
+                  chunks.push(e.data);
+                };
+
+                mr.onstop = (e) => {
+                  const audioBlob = new Blob(chunks, { type: "audio/wav" });
+
+                  // //file to arraybuffer
+                  // const toBuffer = async (blob: Blob) => {
+                  //   const buffer = await blob.arrayBuffer();
+                  //   console.log(buffer);
+                  // };
+
+                  // toBuffer(audioBlob);
+
+                  const reader = new FileReader();
+                  reader.readAsDataURL(audioBlob);
+                  reader.onloadend = () => {
+                    const base64data = reader.result;
+                    console.log(base64data);
+                  };
+                };
+
+                setTimeout(() => {
+                  mr.stop();
+                }, 5000);
+              })
+              .catch((e) => console.log(e));
+          }}
+        ></i>
       </div>
       {/* {VOLUME BAR AND ICONS} */}
       <div className="volume">
