@@ -148,6 +148,15 @@ const Radio = () => {
 
                   // toBuffer(audioBlob);
 
+                  fetch("http://localhost:3000/soundcloud", {
+                    method: "POST",
+                    mode: "cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ radioURL: state.activeRadio.url }),
+                  })
+                    .then((res) => res.json())
+                    .then((data) => console.log(data));
+
                   const reader = new FileReader();
                   reader.readAsDataURL(audioBlob);
                   reader.onloadend = () => {
