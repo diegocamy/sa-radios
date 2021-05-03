@@ -7,6 +7,13 @@ export interface RadioStation {
   logo: string;
 }
 
+export interface IdentifiedTrack {
+  identified: boolean;
+  title?: string;
+  artist?: string;
+  coverart?: string;
+}
+
 export interface AppState {
   radios: RadioStation[];
   activeRadio: RadioStation;
@@ -16,4 +23,6 @@ export interface AppState {
   playing: boolean;
   percentagePlayed: number;
   loadRadio: boolean;
+  identifiying: boolean;
+  track?: IdentifiedTrack | null;
 }

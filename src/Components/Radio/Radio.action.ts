@@ -1,4 +1,4 @@
-import { RadioStation } from "../../interfaces/";
+import { RadioStation, IdentifiedTrack } from "../../interfaces/";
 
 type Action =
   | { type: "change-radio"; radio: RadioStation }
@@ -9,6 +9,8 @@ type Action =
   | { type: "loading"; loading: boolean }
   | { type: "set-stream-url"; url: string }
   | { type: "change-color"; color: string | undefined }
-  | { type: "change-percentage-played"; percentage: number };
+  | { type: "change-percentage-played"; percentage: number }
+  | { type: "identifying"; identifying: boolean }
+  | { type: "identified-track"; track: IdentifiedTrack };
 
 export default Action;

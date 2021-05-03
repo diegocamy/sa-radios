@@ -13,10 +13,12 @@ import "rc-slider/assets/index.css";
 //HELPER FUNCTIONS AND DATA
 import reducer from "./Radio.reducer";
 import fetchStreamURL from "../../utils/fetchStreamURL";
+import identifyTrack from "../../utils/identifyTrack";
 import radios from "../../data/radios";
 import audio from "../../sounds/tune1.wav";
+import { AppState } from "../../interfaces";
 
-const initialState = {
+const initialState: AppState = {
   radios,
   activeRadio: radios[0],
   volume: 1,
@@ -25,6 +27,8 @@ const initialState = {
   loading: false,
   percentagePlayed: Math.random(),
   loadRadio: false,
+  identifiying: false,
+  track: null,
 };
 
 const radioNoise = new Audio(audio);
@@ -87,7 +91,9 @@ const Radio = () => {
         ref={refPlayer}
         playing={state.playing}
         volume={state.volume}
-        onError={(e) => console.log(e)}
+        onError={(e) =>
+          console.log("Oops something went wrong with the radio station")
+        }
         onBuffer={() => {
           radioNoise.pause();
           dispatch({ type: "loading", loading: false });
@@ -124,52 +130,7 @@ const Radio = () => {
         <i
           className="far fa-heart"
           onClick={() => {
-            navigator.mediaDevices
-              .getUserMedia({ audio: true })
-              .then((stream) => {
-                const mr = new MediaRecorder(stream);
-
-                let chunks: any[] = [];
-                mr.start();
-                console.log("Started recording whatever");
-
-                mr.ondataavailable = (e) => {
-                  chunks.push(e.data);
-                };
-
-                mr.onstop = (e) => {
-                  const audioBlob = new Blob(chunks, { type: "audio/wav" });
-
-                  // //file to arraybuffer
-                  // const toBuffer = async (blob: Blob) => {
-                  //   const buffer = await blob.arrayBuffer();
-                  //   console.log(buffer);
-                  // };
-
-                  // toBuffer(audioBlob);
-
-                  fetch("http://localhost:3000/soundcloud", {
-                    method: "POST",
-                    mode: "cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ radioURL: state.activeRadio.url }),
-                  })
-                    .then((res) => res.json())
-                    .then((data) => console.log(data));
-
-                  const reader = new FileReader();
-                  reader.readAsDataURL(audioBlob);
-                  reader.onloadend = () => {
-                    const base64data = reader.result;
-                    console.log(base64data);
-                  };
-                };
-
-                setTimeout(() => {
-                  mr.stop();
-                }, 5000);
-              })
-              .catch((e) => console.log(e));
+            identifyTrack(dispatch);
           }}
         ></i>
       </div>
