@@ -51,6 +51,14 @@ export const AppWrapper = styled.div`
     i {
       margin: 1rem;
     }
+
+    img {
+      width: 1.8rem;
+      margin: 1rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   .rc-slider {
@@ -116,6 +124,10 @@ export const AppWrapper = styled.div`
     }
   }
 
+  .identifying {
+    animation: spinner 2s linear infinite;
+  }
+
   @keyframes spinner {
     0% {
       transform: rotate(0deg);
@@ -123,5 +135,15 @@ export const AppWrapper = styled.div`
     100% {
       transform: rotate(360deg);
     }
+  }
+`;
+
+export const ToastifyTrack = styled.div`
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 20%;
+    margin-right: 1rem;
   }
 `;

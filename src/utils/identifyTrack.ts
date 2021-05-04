@@ -11,6 +11,9 @@ const identifyTrack = (dispatch: React.Dispatch<Action>) => {
       let chunks: any[] = [];
       mr.start(); //start recording audio
 
+      //dispatch identifying action
+      dispatch({ type: "identifying", identifying: true });
+
       mr.ondataavailable = (e) => {
         chunks.push(e.data); //push data into chunks array
       };
@@ -34,10 +37,13 @@ const identifyTrack = (dispatch: React.Dispatch<Action>) => {
             }
           );
 
-          //TODO DISPATCH identifying action
-          console.log(data);
+          dispatch({ type: "identified-track", track: data });
+          dispatch({ type: "identifying", identifying: false });
         } catch (error) {
-          console.log(error.message);
+          return dispatch({
+            type: "error",
+            error: "Oops! Something went wrong",
+          });
         }
       };
 
@@ -45,7 +51,19 @@ const identifyTrack = (dispatch: React.Dispatch<Action>) => {
         mr.stop();
       }, 5000);
     })
-    .catch((e) => console.log(e));
+    .catch((e) => {
+      if (e.message === "Permission denied") {
+        return dispatch({
+          type: "error",
+          error: "SA-Radios has no permission to use the microphone",
+        });
+      }
+
+      return dispatch({
+        type: "error",
+        error: "Oops! Something went wrong",
+      });
+    });
 };
 
 export default identifyTrack;

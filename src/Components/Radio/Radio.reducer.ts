@@ -48,6 +48,22 @@ function reducer(state: AppState, action: Action): AppState {
         ...state,
         activeRadio: { ...state.activeRadio, streamURL: action.url },
       };
+    case "identifying":
+      return {
+        ...state,
+        identifiying: action.identifying,
+      };
+    case "identified-track":
+      return {
+        ...state,
+        track: action.track,
+      };
+    case "error": {
+      return {
+        ...state,
+        error: action.error,
+      };
+    }
     default:
       return state;
   }

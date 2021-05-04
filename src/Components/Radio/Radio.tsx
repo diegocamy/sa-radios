@@ -5,18 +5,23 @@ import ReactSlider from "rc-slider";
 import useColorThief from "use-color-thief";
 import Slider from "../Slider/Slider";
 import SplashScreen from "../SplashScreen/SplashScreen";
+import { ToastContainer, toast } from "react-toastify";
 
 //STYLES
-import { AppWrapper } from "./Radio.styles";
+import { AppWrapper, ToastifyTrack } from "./Radio.styles";
 import "rc-slider/assets/index.css";
+import "react-toastify/dist/ReactToastify.css";
 
 //HELPER FUNCTIONS AND DATA
 import reducer from "./Radio.reducer";
 import fetchStreamURL from "../../utils/fetchStreamURL";
 import identifyTrack from "../../utils/identifyTrack";
 import radios from "../../data/radios";
-import audio from "../../sounds/tune1.wav";
 import { AppState } from "../../interfaces";
+
+//ASSETS
+import audio from "../../sounds/tune1.wav";
+import shazam from "../../assets/logos/shazam.png";
 
 const initialState: AppState = {
   radios,
@@ -29,6 +34,7 @@ const initialState: AppState = {
   loadRadio: false,
   identifiying: false,
   track: null,
+  error: null,
 };
 
 const radioNoise = new Audio(audio);
@@ -49,12 +55,13 @@ const Radio = () => {
         radioNoise.play();
 
         dispatch({ type: "loading", loading: true });
-        const url = await fetchStreamURL(state.activeRadio.url);
+        const url = await fetchStreamURL(state.activeRadio.url, dispatch);
         dispatch({ type: "set-stream-url", url });
       })();
     }
   }, [state.activeRadio.url, state.loadRadio]);
 
+  //USEFFECT FOR CHANGING COLORS TO MATCH RADIO LOGO COLORS
   useEffect(() => {
     if (palette !== null) {
       if (state.activeRadio.id === 8 || state.activeRadio.id === 10) {
@@ -70,12 +77,58 @@ const Radio = () => {
     }
   }, [palette, state.activeRadio.id]);
 
+  //USEFFECT FOR ERRORS
+  useEffect(() => {
+    const notify = () =>
+      toast.error(state.error, {
+        position: "top-center",
+        closeButton: true,
+        onClose: () => dispatch({ type: "error", error: "" }),
+      });
+
+    if (state.error) {
+      notify();
+    }
+  }, [state.error]);
+
+  //USEFFECT FOR SHAZAM
+  useEffect(() => {
+    let notify: () => void;
+    if (state.track) {
+      if (state.track.identified) {
+        notify = () =>
+          toast.info(
+            <ToastifyTrack>
+              <img src={state.track?.coverart} alt="album-coverart" />
+              <div className="toastify--track">
+                <h4>{state.track?.artist}</h4>
+                <p>{state.track?.title}</p>
+              </div>
+            </ToastifyTrack>,
+            {
+              closeButton: true,
+              position: "top-center",
+              autoClose: 10000,
+            }
+          );
+      } else {
+        notify = () =>
+          toast.info("Sorry, we couldn't identify this track", {
+            position: "top-center",
+            closeButton: true,
+          });
+      }
+      notify();
+    }
+  }, [state.track]);
+
   if (!state.loadRadio) {
     return <SplashScreen dispatch={dispatch} />;
   }
 
   return (
     <AppWrapper color={state.color}>
+      <ToastContainer />
       <div className="now-playing">
         <i
           className="fas fa-chevron-left"
@@ -91,9 +144,13 @@ const Radio = () => {
         ref={refPlayer}
         playing={state.playing}
         volume={state.volume}
-        onError={(e) =>
-          console.log("Oops something went wrong with the radio station")
-        }
+        onError={(e) => {
+          dispatch({ type: "pause" });
+          dispatch({
+            type: "error",
+            error: "Oops! Something went wrong with the radio station",
+          });
+        }}
         onBuffer={() => {
           radioNoise.pause();
           dispatch({ type: "loading", loading: false });
@@ -127,12 +184,16 @@ const Radio = () => {
         <a href="https://github.com/diegocamy/sa-radios">
           <i className="fab fa-github"></i>
         </a>
-        <i
-          className="far fa-heart"
+        <img
+          src={shazam}
+          alt="shazam-icon"
           onClick={() => {
-            identifyTrack(dispatch);
+            if (state.playing && !state.identifiying) {
+              identifyTrack(dispatch);
+            }
           }}
-        ></i>
+          className={`shazam ${state.identifiying && "identifying"}`}
+        />
       </div>
       {/* {VOLUME BAR AND ICONS} */}
       <div className="volume">

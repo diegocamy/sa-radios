@@ -25,4 +25,5 @@ export interface AppState {
   loadRadio: boolean;
   identifiying: boolean;
   track?: IdentifiedTrack | null;
+  error: string | null;
 }
