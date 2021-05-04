@@ -53,9 +53,13 @@ const Radio = () => {
       (async () => {
         radioNoise.loop = true;
         radioNoise.play();
-
+        dispatch({ type: "error", error: "" });
         dispatch({ type: "loading", loading: true });
-        const url = await fetchStreamURL(state.activeRadio.url, dispatch);
+        const url = await fetchStreamURL(
+          state.activeRadio.url,
+          dispatch,
+          radioNoise
+        );
         dispatch({ type: "set-stream-url", url });
       })();
     }
@@ -83,7 +87,6 @@ const Radio = () => {
       toast.error(state.error, {
         position: "top-center",
         closeButton: true,
-        onClose: () => dispatch({ type: "error", error: "" }),
       });
 
     if (state.error) {
@@ -145,7 +148,6 @@ const Radio = () => {
         playing={state.playing}
         volume={state.volume}
         onError={(e) => {
-          dispatch({ type: "pause" });
           dispatch({
             type: "error",
             error: "Oops! Something went wrong with the radio station",
@@ -217,7 +219,24 @@ const Radio = () => {
         ) : (
           <i
             className={`fas fa-${state.playing ? "pause" : "play"}`}
-            onClick={() => dispatch({ type: state.playing ? "pause" : "play" })}
+            onClick={async () => {
+              if (state.activeRadio.streamURL) {
+                dispatch({ type: state.playing ? "pause" : "play" });
+              } else {
+                if (!state.playing) {
+                  radioNoise.loop = true;
+                  radioNoise.play();
+                  dispatch({ type: "error", error: "" });
+                  dispatch({ type: "loading", loading: true });
+                  const url = await fetchStreamURL(
+                    state.activeRadio.url,
+                    dispatch,
+                    radioNoise
+                  );
+                  dispatch({ type: "set-stream-url", url });
+                }
+              }
+            }}
           ></i>
         )}
 

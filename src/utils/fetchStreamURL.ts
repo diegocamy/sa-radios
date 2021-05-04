@@ -4,7 +4,8 @@ import Action from "../Components/Radio/Radio.action";
 
 const fetchStreamUrl = async (
   radioURL: string,
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<Action>,
+  radioNoise: HTMLAudioElement
 ) => {
   try {
     const { data: streamURL } = await axios.post(
@@ -15,7 +16,10 @@ const fetchStreamUrl = async (
     );
     return streamURL;
   } catch (error) {
-    return dispatch({
+    radioNoise.pause();
+    dispatch({ type: "loading", loading: false });
+    dispatch({ type: "pause" });
+    dispatch({
       type: "error",
       error: "Oops! Something went wrong with the radio station",
     });
