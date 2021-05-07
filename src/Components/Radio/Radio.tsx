@@ -48,20 +48,26 @@ const Radio = () => {
 
   //fetch the streamURL everytime the activeRadio changes
   useEffect(() => {
+    let timeout: any;
     if (state.loadRadio) {
-      (async () => {
+      (() => {
         radioNoise.loop = true;
         radioNoise.play();
-        dispatch({ type: "error", error: "" });
-        dispatch({ type: "loading", loading: true });
-        const url = await fetchStreamURL(
-          state.activeRadio.url,
-          dispatch,
-          radioNoise
-        );
-        dispatch({ type: "set-stream-url", url });
+        timeout = setTimeout(async () => {
+          dispatch({ type: "error", error: "" });
+          dispatch({ type: "loading", loading: true });
+          const url = await fetchStreamURL(
+            state.activeRadio.url,
+            dispatch,
+            radioNoise
+          );
+          dispatch({ type: "set-stream-url", url });
+        }, 500);
       })();
     }
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [state.activeRadio.url, state.loadRadio]);
 
   //USEFFECT FOR CHANGING COLORS TO MATCH RADIO LOGO COLORS
