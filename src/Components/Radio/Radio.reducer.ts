@@ -51,7 +51,7 @@ function reducer(state: AppState, action: Action): AppState {
     case "identifying":
       return {
         ...state,
-        identifiying: action.identifying,
+        identifying: action.identifying,
       };
     case "identified-track":
       return {

@@ -40,6 +40,7 @@ const identifyTrack = (dispatch: React.Dispatch<Action>) => {
           dispatch({ type: "identified-track", track: data });
           dispatch({ type: "identifying", identifying: false });
         } catch (error) {
+          dispatch({ type: "identifying", identifying: false });
           return dispatch({
             type: "error",
             error: "Oops! Something went wrong",
@@ -52,6 +53,7 @@ const identifyTrack = (dispatch: React.Dispatch<Action>) => {
       }, 5000);
     })
     .catch((e) => {
+      dispatch({ type: "identifying", identifying: false });
       if (e.message === "Permission denied") {
         return dispatch({
           type: "error",

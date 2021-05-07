@@ -23,7 +23,7 @@ export interface AppState {
   playing: boolean;
   percentagePlayed: number;
   loadRadio: boolean;
-  identifiying: boolean;
+  identifying: boolean;
   track?: IdentifiedTrack | null;
   error: string | null;
 }

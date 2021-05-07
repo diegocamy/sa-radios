@@ -21,7 +21,6 @@ import { AppState } from "../../interfaces";
 
 //ASSETS
 import audio from "../../sounds/tune1.wav";
-import shazam from "../../assets/logos/shazam.png";
 
 const initialState: AppState = {
   radios,
@@ -32,7 +31,7 @@ const initialState: AppState = {
   loading: false,
   percentagePlayed: Math.random(),
   loadRadio: false,
-  identifiying: false,
+  identifying: false,
   track: null,
   error: null,
 };
@@ -111,7 +110,7 @@ const Radio = () => {
             {
               closeButton: true,
               position: "top-center",
-              autoClose: 10000,
+              autoClose: 15000,
             }
           );
       } else {
@@ -186,16 +185,21 @@ const Radio = () => {
         <a href="https://github.com/diegocamy/sa-radios">
           <i className="fab fa-github"></i>
         </a>
-        <img
-          src={shazam}
-          alt="shazam-icon"
+        <i
+          className="fa fa-music"
           onClick={() => {
-            if (state.playing && !state.identifiying) {
+            if (state.playing && !state.identifying) {
+              const notify = () =>
+                toast.info("Identifying music... please wait", {
+                  position: "top-center",
+                  closeButton: true,
+                  autoClose: 8000,
+                });
+              notify();
               identifyTrack(dispatch);
             }
           }}
-          className={`shazam ${state.identifiying && "identifying"}`}
-        />
+        ></i>
       </div>
       {/* {VOLUME BAR AND ICONS} */}
       <div className="volume">

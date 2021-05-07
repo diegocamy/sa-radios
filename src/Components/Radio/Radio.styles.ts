@@ -6,6 +6,9 @@ export const AppWrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
 
+  max-width: 600px;
+  margin: auto;
+
   a {
     text-decoration: none;
     color: inherit;
