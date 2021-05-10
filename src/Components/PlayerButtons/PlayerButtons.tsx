@@ -8,6 +8,26 @@ interface State {
 
 const PlayerButtons = ({ radioNoise }: State) => {
   const { dispatch, state } = useContext(StateContext);
+
+  const playRadio = async () => {
+    if (state.activeRadio.streamURL) {
+      dispatch({ type: state.playing ? "pause" : "play" });
+    } else {
+      if (!state.playing) {
+        radioNoise.loop = true;
+        radioNoise.play();
+        dispatch({ type: "error", error: "" });
+        dispatch({ type: "loading", loading: true });
+        const url = await fetchStreamURL(
+          state.activeRadio.url,
+          dispatch,
+          radioNoise
+        );
+        dispatch({ type: "set-stream-url", url });
+      }
+    }
+  };
+
   return (
     <div className="control-icons">
       <i className="fas fa-step-backward prev-radio"></i>
@@ -16,24 +36,7 @@ const PlayerButtons = ({ radioNoise }: State) => {
       ) : (
         <i
           className={`fas fa-${state.playing ? "pause" : "play"}`}
-          onClick={async () => {
-            if (state.activeRadio.streamURL) {
-              dispatch({ type: state.playing ? "pause" : "play" });
-            } else {
-              if (!state.playing) {
-                radioNoise.loop = true;
-                radioNoise.play();
-                dispatch({ type: "error", error: "" });
-                dispatch({ type: "loading", loading: true });
-                const url = await fetchStreamURL(
-                  state.activeRadio.url,
-                  dispatch,
-                  radioNoise
-                );
-                dispatch({ type: "set-stream-url", url });
-              }
-            }
-          }}
+          onClick={playRadio}
         ></i>
       )}
 

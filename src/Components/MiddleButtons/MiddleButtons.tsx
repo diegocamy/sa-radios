@@ -29,6 +29,20 @@ const MiddleButtons = () => {
 
     return () => document.removeEventListener("click", handleClickOutside);
   }, [shareRef, state.showShareButtons, dispatch]);
+
+  const identifyCurrentSong = () => {
+    if (state.playing && !state.identifying) {
+      const notify = () =>
+        toast.info("Identifying music... please wait", {
+          position: "top-center",
+          closeButton: true,
+          autoClose: 8000,
+        });
+      notify();
+      identifyTrack(dispatch);
+    }
+  };
+
   return (
     <div className="icons">
       {state.showShareButtons && (
@@ -77,18 +91,7 @@ const MiddleButtons = () => {
       </a>
       <i
         className={`fa fa-music ${state.identifying && "identifying"}`}
-        onClick={() => {
-          if (state.playing && !state.identifying) {
-            const notify = () =>
-              toast.info("Identifying music... please wait", {
-                position: "top-center",
-                closeButton: true,
-                autoClose: 8000,
-              });
-            notify();
-            identifyTrack(dispatch);
-          }
-        }}
+        onClick={identifyCurrentSong}
       ></i>
     </div>
   );
