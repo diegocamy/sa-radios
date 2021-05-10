@@ -36,6 +36,8 @@ const Slider = () => {
           nextEl: ".next-radio",
           prevEl: ".prev-radio",
         }}
+        allowSlideNext={state.identifying ? false : true}
+        allowSlidePrev={state.identifying ? false : true}
       >
         {state.radios?.map((r) => (
           <SwiperSlide key={r.id}>
