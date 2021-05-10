@@ -51,6 +51,7 @@ export const AppWrapper = styled.div`
     align-items: center;
     font-size: 1.8rem;
     margin: auto;
+
     i {
       margin: 1rem;
     }
@@ -60,6 +61,34 @@ export const AppWrapper = styled.div`
       margin: 1rem;
       &:hover {
         cursor: pointer;
+      }
+    }
+    .share {
+      position: absolute;
+      width: fit-content;
+      border-radius: 10px;
+      padding: 10px 5px;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 100ms linear;
+      text-align: center;
+      box-shadow: 2px 2px 5px grey;
+      z-index: 10;
+      background-color: white;
+
+      p {
+        margin: 5px;
+        font-size: 1.5rem;
+      }
+
+      i {
+        font-size: 2.5rem;
+        margin: 5px;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
       }
     }
   }
@@ -128,15 +157,15 @@ export const AppWrapper = styled.div`
   }
 
   .identifying {
-    animation: spinner 2s linear infinite;
+    animation: spinner 0.5s linear infinite;
   }
 
   @keyframes spinner {
     0% {
-      transform: rotate(0deg);
+      transform: scale(0.9);
     }
     100% {
-      transform: rotate(360deg);
+      transform: scale(1);
     }
   }
 `;

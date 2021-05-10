@@ -7,6 +7,7 @@ type Action =
   | { type: "pause" }
   | { type: "first-load" }
   | { type: "loading"; loading: boolean }
+  | { type: "show-share"; show: boolean }
   | { type: "set-stream-url"; url: string }
   | { type: "change-color"; color: string | undefined }
   | { type: "change-percentage-played"; percentage: number }

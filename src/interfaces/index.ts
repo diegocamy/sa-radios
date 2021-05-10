@@ -21,6 +21,7 @@ export interface AppState {
   loading: boolean;
   volume: number;
   playing: boolean;
+  showShareButtons: boolean;
   percentagePlayed: number;
   loadRadio: boolean;
   identifying: boolean;

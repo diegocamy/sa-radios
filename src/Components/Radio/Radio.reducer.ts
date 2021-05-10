@@ -43,6 +43,11 @@ function reducer(state: AppState, action: Action): AppState {
         ...state,
         loading: action.loading,
       };
+    case "show-share":
+      return {
+        ...state,
+        showShareButtons: action.show,
+      };
     case "set-stream-url":
       return {
         ...state,

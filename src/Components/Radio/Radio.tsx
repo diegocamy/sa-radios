@@ -6,6 +6,13 @@ import useColorThief from "use-color-thief";
 import Slider from "../Slider/Slider";
 import SplashScreen from "../SplashScreen/SplashScreen";
 import { ToastContainer, toast } from "react-toastify";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  WhatsappShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+} from "react-share";
 
 //STYLES
 import { AppWrapper, ToastifyTrack } from "./Radio.styles";
@@ -29,6 +36,7 @@ const initialState: AppState = {
   color: "",
   playing: false,
   loading: false,
+  showShareButtons: false,
   percentagePlayed: Math.random(),
   loadRadio: false,
   identifying: false,
@@ -45,6 +53,22 @@ const Radio = () => {
     quality: 10,
   });
   const refPlayer = useRef<any>();
+  const shareRef = useRef<any>();
+
+  //USE EFFECT TO SHOW OR HIDE SHARE MENU
+  useEffect(() => {
+    const handleClickOutside = (e: Event) => {
+      if (shareRef.current && !shareRef.current.contains(e.target)) {
+        if (state.showShareButtons) {
+          dispatch({ type: "show-share", show: false });
+        }
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [shareRef, state.showShareButtons]);
 
   //fetch the streamURL everytime the activeRadio changes
   useEffect(() => {
@@ -187,12 +211,52 @@ const Radio = () => {
       {/* BUTTONS
       SHARE - GITHUB - LIKE */}
       <div className="icons">
-        <i className="fas fa-share-alt"></i>
+        {state.showShareButtons && (
+          <div className="share" ref={shareRef}>
+            <p>Share SA-Radios</p>
+            <EmailShareButton
+              url={window.location.href}
+              subject="SA-Radios"
+              body="Listen to the SA Radios everywhere"
+            >
+              <i className="far fa-envelope"></i>
+            </EmailShareButton>
+            <FacebookShareButton
+              url={window.location.href}
+              quote="Listen to the SA radio stations everywhere"
+            >
+              <i className="fab fa-facebook-square"></i>
+            </FacebookShareButton>
+            <TwitterShareButton
+              url={window.location.href}
+              title="Listen to the SA radio stations everywhere"
+            >
+              <i className="fab fa-twitter-square"></i>
+            </TwitterShareButton>
+            <WhatsappShareButton
+              url={window.location.href}
+              title="Listen to the SA radio stations everywhere"
+            >
+              <i className="fab fa-whatsapp-square"></i>
+            </WhatsappShareButton>
+            <TelegramShareButton
+              url={window.location.href}
+              title="Listen to the SA radio stations everywhere"
+            >
+              <i className="fab fa-telegram"></i>
+            </TelegramShareButton>
+          </div>
+        )}
+        <i
+          className="fas fa-share-alt"
+          onClick={() => dispatch({ type: "show-share", show: true })}
+        ></i>
+
         <a href="https://github.com/diegocamy/sa-radios">
           <i className="fab fa-github"></i>
         </a>
         <i
-          className="fa fa-music"
+          className={`fa fa-music ${state.identifying && "identifying"}`}
           onClick={() => {
             if (state.playing && !state.identifying) {
               const notify = () =>
