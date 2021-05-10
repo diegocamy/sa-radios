@@ -157,10 +157,19 @@ export const AppWrapper = styled.div`
   }
 
   .identifying {
-    animation: spinner 0.5s linear infinite;
+    animation: grow 1s linear infinite;
   }
 
   @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes grow {
     0% {
       transform: scale(0.9);
     }

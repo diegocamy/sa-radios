@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 // import Swiper core and required modules
 import SwiperCore, { Lazy, A11y, Navigation } from "swiper";
 
@@ -11,18 +13,13 @@ import "swiper/components/scrollbar/scrollbar.scss";
 
 import RadioCard from "../RadioCard/RadioCard";
 import { Wrapper } from "./Slider.styles";
-import { RadioStation } from "../../interfaces";
-import Action from "../Radio/Radio.action";
+import { StateContext } from "../Radio/Radio";
 
 // install Swiper modules
 SwiperCore.use([A11y, Lazy, Navigation]);
 
-type Props = {
-  radios: RadioStation[];
-  dispatch: React.Dispatch<Action>;
-};
-
-const Slider = ({ radios, dispatch }: Props) => {
+const Slider = () => {
+  const { dispatch, state } = useContext(StateContext);
   return (
     <Wrapper>
       <Swiper
@@ -30,14 +27,17 @@ const Slider = ({ radios, dispatch }: Props) => {
         slidesPerView={1}
         loop={true}
         onSlideChange={(swiper) =>
-          dispatch({ type: "change-radio", radio: radios[swiper.realIndex] })
+          dispatch({
+            type: "change-radio",
+            radio: state.radios[swiper.realIndex],
+          })
         }
         navigation={{
           nextEl: ".next-radio",
           prevEl: ".prev-radio",
         }}
       >
-        {radios?.map((r) => (
+        {state.radios?.map((r) => (
           <SwiperSlide key={r.id}>
             <RadioCard img={r.logo} />
           </SwiperSlide>
