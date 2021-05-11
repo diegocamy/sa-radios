@@ -138,7 +138,7 @@ const Radio = () => {
   }, [state.track]);
 
   if (!state.loadRadio) {
-    return <SplashScreen dispatch={dispatch} />;
+    return <SplashScreen />;
   }
 
   return (

@@ -14,6 +14,10 @@ export const AppWrapper = styled.div`
     color: inherit;
   }
 
+  .particles {
+    display: none;
+  }
+
   .now-playing {
     color: ${({ color }) => `rgb(${color})`};
     display: flex;
@@ -175,6 +179,11 @@ export const AppWrapper = styled.div`
     }
     100% {
       transform: scale(1);
+    }
+  }
+
+  @media only screen and (min-width: 768px) {
+    .particles {
     }
   }
 `;
