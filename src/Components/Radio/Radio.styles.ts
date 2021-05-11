@@ -5,23 +5,20 @@ export const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
   max-width: 600px;
   margin: auto;
+  z-index: 3;
 
   a {
     text-decoration: none;
     color: inherit;
   }
 
-  .particles {
-    display: none;
-  }
-
   .now-playing {
     color: ${({ color }) => `rgb(${color})`};
     display: flex;
     padding: 1rem;
+    margin-bottom: 1rem;
     justify-content: space-between;
     align-items: center;
     font-size: 1.2rem;
@@ -34,7 +31,8 @@ export const AppWrapper = styled.div`
   .radio-info {
     color: ${({ color }) => `rgb(${color})`};
     font-weight: bold;
-    height: 90px;
+    height: fit-content;
+    text-align: center;
     width: 80%;
     margin: 1rem auto;
     margin-top: 2rem;
@@ -183,7 +181,37 @@ export const AppWrapper = styled.div`
   }
 
   @media only screen and (min-width: 768px) {
-    .particles {
+    height: 80vh;
+    width: 90%;
+    max-width: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white !important;
+    border-radius: 2rem;
+    z-index: 500;
+
+    .now-playing {
+      padding: 1rem 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .radio-info {
+      text-align: center;
+      height: fit-content;
+    }
+
+    .icons {
+      margin-bottom: 2rem;
+    }
+
+    .rc-slider {
+      width: 50%;
+    }
+
+    .volume-icons {
+      width: 50%;
     }
   }
 `;
@@ -195,5 +223,28 @@ export const ToastifyTrack = styled.div`
   img {
     width: 20%;
     margin-right: 1rem;
+  }
+`;
+
+export const RadioContainer = styled.div`
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+
+  .particles {
+    display: none;
+  }
+
+  @media only screen and (min-width: 768px) {
+    .particles {
+      display: block;
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-color: ${(props) => `rgba(${props.color},0.2)`};
+    }
   }
 `;

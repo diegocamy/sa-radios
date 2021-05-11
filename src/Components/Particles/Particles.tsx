@@ -12,46 +12,47 @@ import kjah from "../../assets/logos/kjah.png";
 import master from "../../assets/logos/master.png";
 import wctr from "../../assets/logos/wctr.png";
 
+const defaultImages = [
+  { src: kdst, height: 1, width: 1 },
+  { src: playback, height: 1, width: 1 },
+  { src: krose, height: 1, width: 1 },
+  { src: bounce, height: 1, width: 1 },
+  { src: radiols, height: 1, width: 1 },
+  { src: radiox, height: 1, width: 1 },
+  { src: csr, height: 1, width: 1 },
+  { src: kjah, height: 1, width: 1 },
+  { src: master, height: 1, width: 1 },
+  { src: wctr, height: 1, width: 1 },
+  { src: sfur, height: 1, width: 1 },
+];
+
 interface Props {
   className: string;
+  numOfParticles?: number;
+  image?: string;
 }
 
-const Particles = ({ className }: Props) => {
+const Particles = ({ className, image, numOfParticles }: Props) => {
   return (
     <Particlesjs
       className={className}
       params={{
         particles: {
-          number: { value: 50 },
+          number: { value: numOfParticles ? numOfParticles : 50 },
           move: {
             speed: { max: 1, min: 0.5 },
             outMode: "out",
-            collisions: false,
+            collisions: true,
           },
           shape: {
             type: ["images"],
-            image: [
-              {
-                src: kdst,
-                height: 50,
-                width: 50,
-                fill: true,
-              },
-              { src: playback, height: 50, width: 50, fill: true },
-              { src: krose, height: 50, width: 50, fill: true },
-              { src: bounce, height: 50, width: 50, fill: true },
-              { src: radiols, height: 50, width: 50, fill: true },
-              { src: radiox, height: 50, width: 50, fill: true },
-              { src: csr, height: 50, width: 50, fill: true },
-              { src: kjah, height: 50, width: 50, fill: true },
-              { src: master, height: 50, width: 50, fill: true },
-              { src: wctr, height: 50, width: 50, fill: true },
-              { src: sfur, height: 50, width: 50, fill: true },
-            ],
+            image: image
+              ? [{ src: image, height: 100, width: 100 }]
+              : defaultImages,
           },
           line_linked: { enable: false },
           opacity: { value: 500, random: false },
-          size: { value: 15 },
+          size: { value: image ? 75 : 15 },
         },
       }}
     />

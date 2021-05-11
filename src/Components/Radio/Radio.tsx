@@ -1,6 +1,7 @@
 import { useEffect, useReducer, createContext } from "react";
 //COMPONENTS
 import useColorThief from "use-color-thief";
+import { ToastContainer, toast } from "react-toastify";
 import Slider from "../Slider/Slider";
 import SplashScreen from "../SplashScreen/SplashScreen";
 import RadioPlayer from "../RadioPlayer/RadioPlayer";
@@ -8,10 +9,10 @@ import MiddleButtons from "../MiddleButtons/MiddleButtons";
 import PlayerButtons from "../PlayerButtons/PlayerButtons";
 import VolumeButtons from "../VolumeButtons/VolumeButtons";
 import TopSection from "../TopSection/TopSection";
-import { ToastContainer, toast } from "react-toastify";
+import Particles from "../Particles/Particles";
 
 //STYLES
-import { AppWrapper, ToastifyTrack } from "./Radio.styles";
+import { AppWrapper, ToastifyTrack, RadioContainer } from "./Radio.styles";
 import "rc-slider/assets/index.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -138,25 +139,36 @@ const Radio = () => {
   }, [state.track]);
 
   if (!state.loadRadio) {
-    return <SplashScreen />;
+    return (
+      <StateContext.Provider value={{ state, dispatch }}>
+        <SplashScreen />
+      </StateContext.Provider>
+    );
   }
 
   return (
-    <AppWrapper color={state.color}>
-      <ToastContainer />
-      <StateContext.Provider value={{ state, dispatch }}>
-        <TopSection />
-        <RadioPlayer radioNoise={radioNoise} />
-        <Slider />
-        <div className="radio-info">
-          <p>{state.activeRadio.name}</p>
-          <p>{state.activeRadio.host}</p>
-        </div>
-        <MiddleButtons />
-        <VolumeButtons />
-        <PlayerButtons radioNoise={radioNoise} />
-      </StateContext.Provider>
-    </AppWrapper>
+    <RadioContainer color={state.color}>
+      <Particles
+        className="particles"
+        image={state.activeRadio.logo}
+        numOfParticles={10}
+      />
+      <AppWrapper color={state.color}>
+        <ToastContainer />
+        <StateContext.Provider value={{ state, dispatch }}>
+          <TopSection />
+          <RadioPlayer radioNoise={radioNoise} />
+          <Slider />
+          <div className="radio-info">
+            <p>{state.activeRadio.name}</p>
+            <p>{state.activeRadio.host}</p>
+          </div>
+          <MiddleButtons />
+          <VolumeButtons />
+          <PlayerButtons radioNoise={radioNoise} />
+        </StateContext.Provider>
+      </AppWrapper>
+    </RadioContainer>
   );
 };
 

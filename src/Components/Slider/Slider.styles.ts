@@ -11,4 +11,17 @@ export const Wrapper = styled.div`
       }
     }
   }
+
+  @media only screen and (min-width: 768px) {
+    .swiper-container {
+      .swiper-wrapper {
+        .swiper-slide {
+          div {
+            margin: auto;
+            width: 30%;
+          }
+        }
+      }
+    }
+  }
 `;
