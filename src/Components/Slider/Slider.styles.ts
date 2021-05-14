@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
         .swiper-slide {
           div {
             margin: auto;
-            width: 30%;
+            width: 20%;
           }
         }
       }

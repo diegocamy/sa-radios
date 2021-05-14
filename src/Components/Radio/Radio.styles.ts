@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const AppWrapper = styled.div`
   height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -12,6 +13,10 @@ export const AppWrapper = styled.div`
   a {
     text-decoration: none;
     color: inherit;
+  }
+
+  .white {
+    color: white;
   }
 
   .now-playing {
@@ -181,7 +186,7 @@ export const AppWrapper = styled.div`
   }
 
   @media only screen and (min-width: 768px) {
-    height: 80vh;
+    height: fit-content;
     width: 90%;
     max-width: 1000px;
     position: absolute;
@@ -230,16 +235,18 @@ export const RadioContainer = styled.div`
   position: relative;
   height: 100vh;
   width: 100vw;
+  overflow: hidden !important;
 
   .particles {
     display: none;
   }
 
   @media only screen and (min-width: 768px) {
+    overflow: auto;
     .particles {
       display: block;
       position: absolute;
-      height: 100vh;
+      height: 100%;
       width: 100vw;
       top: 0;
       left: 0;

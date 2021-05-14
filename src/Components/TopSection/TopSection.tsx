@@ -11,7 +11,7 @@ const TopSection = () => {
         onClick={() => dispatch({ type: "first-load" })}
       ></i>
       <p>Now playing</p>
-      <i className="fas fa-ellipsis-v"></i>
+      <i className="fas fa-ellipsis-v white"></i>
     </div>
   );
 };
