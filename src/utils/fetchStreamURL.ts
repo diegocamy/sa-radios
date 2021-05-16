@@ -8,12 +8,9 @@ const fetchStreamUrl = async (
   radioNoise: HTMLAudioElement
 ) => {
   try {
-    const { data: streamURL } = await axios.post(
-      "http://localhost:3000/soundcloud",
-      {
-        radioURL: radioURL,
-      }
-    );
+    const { data: streamURL } = await axios.post("/soundcloud", {
+      radioURL: radioURL,
+    });
     return streamURL;
   } catch (error) {
     radioNoise.pause();

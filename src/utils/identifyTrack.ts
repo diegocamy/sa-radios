@@ -27,15 +27,11 @@ const identifyTrack = (dispatch: React.Dispatch<Action>) => {
 
         //send recording to backend
         try {
-          const { data } = await axios.post(
-            "http://localhost:3000/shazam",
-            form,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
+          const { data } = await axios.post("/shazam", form, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
 
           dispatch({ type: "identified-track", track: data });
           dispatch({ type: "identifying", identifying: false });
